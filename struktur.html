@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Struktur & Organisasi - Manarul Hidayah</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  /* --- 1. CORE SETUP --- */
+  :root {
+    --green: #5C6F2B;
+    --dark: #1a210d;
+    --cream: #F2F0E9;
+    --gold: #D4AF37;
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.95);
+  }
+
+  body { margin: 0; font-family: 'General Sans', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.8; }
+  .fw-buster { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+  
+  /* --- ANIMATIONS --- */
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* --- NAVBAR (KONSISTEN) --- */
+  nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; }
+  .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Cabinet Grotesk', sans-serif; font-size: 1.5rem; color: var(--green); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .nav-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
+  .nav-links a:hover { color: var(--green); }
+  .btn-ppdb-nav { background: var(--green); color: white !important; padding: 8px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; }
+  .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+  /* --- HERO HEADER --- */
+  .page-header {
+    height: 60vh; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; color: white; text-align: center; background: var(--dark);
+  }
+  .header-bg { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.4); }
+  .header-content { position: relative; z-index: 3; padding: 0 20px; margin-top: 40px; max-width: 800px; }
+  .header-badge { border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; display: inline-block; margin-bottom: 20px; }
+  .header-title { font-family: 'Cabinet Grotesk'; font-size: 4rem; margin-bottom: 20px; line-height: 1; }
+  .header-desc { font-size: 1.1rem; color: #ddd; font-weight: 400; line-height: 1.6; }
+
+  /* --- 1. VISUAL MINDMAP (POHON) --- */
+  .org-section { padding: 100px 5% 60px; background: var(--white); overflow-x: auto; }
+  .tree-title { text-align: center; margin-bottom: 60px; }
+  .tree-title h2 { font-family: 'Cabinet Grotesk'; font-size: 2.5rem; color: var(--dark); margin: 0; }
+  
+  .tree { display: flex; flex-direction: column; align-items: center; }
+  .tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; }
+  .tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 20px 10px 0 10px; }
+  
+  /* Garis Konektor CSS */
+  .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--gold); width: 50%; height: 20px; }
+  .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--gold); }
+  .tree li:only-child::after, .tree li:only-child::before { display: none; }
+  .tree li:only-child { padding-top: 0; }
+  .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+  .tree li:last-child::before{ border-right: 2px solid var(--gold); border-radius: 0 5px 0 0; }
+  .tree li:first-child::after{ border-radius: 5px 0 0 0; }
+  .tree ul ul::before{ content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--gold); width: 0; height: 20px; }
+
+  /* Node Card */
+  .org-node {
+    border: 1px solid #eee; padding: 15px 20px; text-decoration: none; background: white; 
+    color: var(--dark); display: inline-block; border-radius: 15px; min-width: 200px; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; z-index: 2; transition: 0.3s;
+  }
+  .org-node:hover { transform: translateY(-5px); border-color: var(--green); box-shadow: 0 10px 25px rgba(92,111,43,0.15); }
+  .org-node.main { border: 2px solid var(--green); background: #fcfdf8; }
+  
+  .node-role { font-size: 0.65rem; text-transform: uppercase; font-weight: 800; color: var(--gold); letter-spacing: 1px; display: block; margin-bottom: 5px; }
+  .node-name { font-family: 'Cabinet Grotesk'; font-size: 1rem; color: var(--dark); line-height: 1.2; font-weight: 700; }
+  
+  /* --- 2. NARASI KREATIF (LAYOUT BARU) --- */
+  .narrative-bg { background: var(--cream); padding: 100px 5%; }
+  
+  /* A. Layout Pimpinan (Magazine Header) */
+  .leader-feature {
+    background: white; border-radius: 30px; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05); margin-bottom: 100px;
+    display: grid; grid-template-columns: 1.2fr 1fr;
+  }
+  .leader-text { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+  .leader-badge { background: var(--dark); color: white; padding: 8px 20px; border-radius: 50px; align-self: flex-start; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; }
+  .leader-name { font-family: 'Cabinet Grotesk'; font-size: 3rem; line-height: 1.1; color: var(--dark); margin-bottom: 10px; }
+  .leader-sub { font-size: 1.2rem; color: var(--green); font-weight: bold; margin-bottom: 30px; display: block; }
+  
+  .quote-block { 
+    border-left: 4px solid var(--gold); padding-left: 20px; margin: 30px 0;
+    font-style: italic; font-size: 1.1rem; color: #555; background: #f9f9f9; padding: 20px; border-radius: 0 10px 10px 0;
+  }
+  .leader-desc-full { text-align: justify; color: #444; margin-bottom: 20px; font-size: 1rem; }
+  
+  .leader-image-side { 
+    background-image: url('https://image2url.com/r2/default/images/1771306252865-9fd15ca4-5b7d-441f-bfbe-47c56420e418.png');
+    background-size: cover; background-position: center; min-height: 500px; position: relative;
+  }
+  .leader-image-side::after {
+    content:''; position: absolute; top:0; left:0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 20%);
+  }
+
+  /* B. Layout Pengasuh (Detailed ZigZag) */
+  .pengasuh-section { margin-bottom: 100px; }
+  .section-heading { text-align: center; margin-bottom: 60px; }
+  .section-heading h3 { font-family: 'Cabinet Grotesk'; font-size: 2.5rem; margin-bottom: 10px; }
+  
+  .zigzag-card {
+    display: flex; gap: 60px; align-items: flex-start; margin-bottom: 80px;
+    background: white; padding: 50px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.05);
+  }
+  .zigzag-card:nth-child(even) { flex-direction: row-reverse; }
+  
+  .zigzag-visual { flex: 1; text-align: center; }
+  .zigzag-icon-box {
+    width: 120px; height: 120px; background: var(--green); color: white;
+    border-radius: 30px; display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; margin: 0 auto 30px; transform: rotate(3deg);
+    box-shadow: 10px 10px 0px var(--gold);
+  }
+  .zigzag-content { flex: 2; }
+  .zigzag-role { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #999; font-weight: 700; margin-bottom: 10px; display: block; }
+  .zigzag-name { font-family: 'Cabinet Grotesk'; font-size: 2rem; color: var(--dark); line-height: 1.2; margin-bottom: 20px; }
+  .zigzag-desc { text-align: justify; margin-bottom: 25px; color: #555; }
+  
+  .focus-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+  .focus-item { background: var(--cream); padding: 10px 15px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+  .focus-item i { color: var(--green); }
+
+  /* C. Layout Staff (Info Panels) */
+  .staff-container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 100px; }
+  .staff-panel {
+    background: white; padding: 40px; border-radius: 20px; border-top: 6px solid var(--dark);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.3s;
+  }
+  .staff-panel:hover { transform: translateY(-10px); }
+  .panel-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+  .panel-icon { font-size: 2rem; color: var(--green); background: var(--cream); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+  .panel-title h4 { font-family: 'Cabinet Grotesk'; font-size: 1.5rem; margin: 0; }
+  .panel-title span { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .staff-desc p { margin-bottom: 15px; text-align: justify; font-size: 0.95rem; color: #555; }
+  .task-list { list-style: none; padding: 0; margin-top: 20px; }
+  .task-list li { margin-bottom: 10px; padding-left: 20px; position: relative; font-size: 0.9rem; }
+  .task-list li::before { content: '•'; color: var(--gold); font-weight: bold; position: absolute; left: 0; font-size: 1.2rem; top: -5px; }
+
+  /* D. Divisi Operasional (Grid Card with Hover) */
+  .ops-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  .ops-card {
+    background: white; padding: 30px; border-radius: 20px; position: relative; overflow: hidden;
+    transition: 0.3s; border: 1px solid #eee; height: 100%;
+  }
+  .ops-card:hover { transform: translateY(-5px); border-color: var(--green); box-shadow: 0 15px 30px rgba(92, 111, 43, 0.15); }
+  .ops-icon-big { font-size: 2.5rem; color: var(--green); margin-bottom: 20px; }
+  .ops-card h4 { font-family: 'Cabinet Grotesk'; font-size: 1.3rem; margin-bottom: 15px; }
+  .ops-card p { font-size: 0.9rem; color: #666; line-height: 1.6; }
+  
+  /* Footer */
+  footer { background: var(--dark); color: white; padding: 80px 5%; text-align: center; }
+  .footer-links i { font-size: 1.5rem; margin: 0 15px; transition: 0.3s; color: white; cursor: pointer; }
+
+  /* RESPONSIVE MOBILE */
+  @media (max-width: 900px) {
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
+    .nav-links.active { display: flex; }
+    .mobile-toggle { display: block; }
+
+    .page-header { height: 400px; }
+    .header-title { font-size: 2.5rem; }
+    
+    /* Mindmap jadi List */
+    .tree, .tree ul, .tree li { display: block; padding: 0; margin: 0; float: none; text-align: left; }
+    .tree li::before, .tree li::after, .tree ul ul::before { display: none; }
+    .tree li { padding-bottom: 15px; width: 100%; border-left: 3px solid var(--green); padding-left: 20px; margin-left: 10px; margin-bottom: 15px; }
+    .org-node { width: 100%; min-width: auto; }
+
+    /* Leader Mobile */
+    .leader-feature { grid-template-columns: 1fr; }
+    .leader-image-side { min-height: 250px; order: -1; }
+    .leader-text { padding: 30px; }
+    .leader-name { font-size: 2rem; }
+
+    /* Zigzag Mobile */
+    .zigzag-card, .zigzag-card:nth-child(even) { flex-direction: column; gap: 30px; text-align: center; padding: 30px; }
+    .zigzag-icon-box { margin: 0 auto 20px; transform: rotate(0); }
+    .zigzag-desc { text-align: center; }
+    .focus-list { grid-template-columns: 1fr; text-align: left; }
+
+    /* Staff & Ops Mobile */
+    .staff-container, .ops-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fw-buster">
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-mosque"></i> MANARUL HIDAYAH</div>
+      <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#profil">Profil</a></li>
+        <li><a href="index.html#brosur">Pendaftaran</a></li>
+        <li><a href="index.html#kegiatan">Kegiatan</a></li>
+        <li><a href="index.html#berita">Berita</a></li>
+        <li><a href="index.html#kontak">Kontak</a></li>
+        <li><a href="#" class="btn-ppdb-nav">DAFTAR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <img src="https://images.unsplash.com/photo-1564121211835-e8f98502d558?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" class="header-bg" alt="Pesantren">
+    <div class="header-content reveal">
+      <span class="header-badge">Struktur Organisasi</span>
+      <h1 class="header-title">Khidmat & Dedikasi</h1>
+      <p class="header-desc">Mengenal lebih dekat para pemangku amanah yang mewakafkan ilmu, waktu, dan dirinya untuk mencetak generasi Rabbani di Pondok Pesantren Manarul Hidayah.</p>
+    </div>
+  </header>
+
+  <section class="org-section">
+    <div class="tree-title reveal">
+      <h2>Peta Organisasi</h2>
+    </div>
+    <div class="tree reveal">
+      <ul>
+        <li>
+          <div class="org-node main">
+            <span class="node-role">Pimpinan Yayasan</span>
+            <div class="node-name">Ky. Toyib Rasilan, S.Pd.I.</div>
+            <div class="node-name">& Uzh. Eroh Humaeroh</div>
+          </div>
+          <ul>
+            <li>
+              <div class="org-node">
+                <span class="node-role">Pengasuh Putra</span>
+                <div class="node-name">Ky. Moch. Bachtiar R.</div>
+                <div class="node-name">& Uzh. Neng Siti Mariah</div>
+              </div>
+              <ul><li><div class="org-node"><span class="node-role">Sekretaris</span><div class="node-name">Muhamad Mahfudz, S.E.</div></div></li></ul>
+            </li>
+            <li>
+              <div class="org-node">
+                <span class="node-role">Pengasuh Putri</span>
+                <div class="node-name">Uzh. Hj. Yuyun Y.</div>
+                <div class="node-name">& Ust. Ahmad Muttaqin</div>
+              </div>
+              <ul><li><div class="org-node"><span class="node-role">Bendahara</span><div class="node-name">Ust. Ahmad Munjid</div></div></li></ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="narrative-bg">
+    
+    <div class="leader-feature reveal">
+      <div class="leader-text">
+        <span class="leader-badge">PENDIRI & PIMPINAN</span>
+        <h2 class="leader-name">Ky. Toyib Rasilan, S.Pd.I.<br>& Uzh. Eroh Humaeroh</h2>
+        <span class="leader-sub">Penjaga Ruhul Ma'had & Visi Pesantren</span>
+        
+        <div class="quote-block">
+          "Pesantren bukan sekadar tempat sekolah, tapi tempat menempa jiwa agar siap hidup mandiri dan bermanfaat bagi umat."
+        </div>
+        
+        <p class="leader-desc-full">
+          Sebagai nakhoda utama Manarul Hidayah, Kyai Toyib dan Ustadzah Eroh memegang amanah spiritual (Riyadhoh) dan manajerial tertinggi. Beliau berdua tidak hanya bertanggung jawab atas kurikulum dan pembangunan fisik, tetapi juga memastikan "Ruhul Ma'had" (Jiwa Pesantren) tetap hidup dalam setiap denyut aktivitas santri.
+        </p>
+        <p class="leader-desc-full">
+          Kepemimpinan beliau berfokus pada integrasi nilai-nilai Salafus Shalih dengan kebutuhan zaman modern, memastikan lulusan Manarul Hidayah memiliki sanad keilmuan yang jelas sekaligus keterampilan hidup (life skill) yang mumpuni.
+        </p>
+      </div>
+      <div class="leader-image-side"></div>
+    </div>
+
+    <div class="pengasuh-section">
+      <div class="section-heading reveal"><h3>Dewan Pengasuh Santri</h3></div>
+
+      <div class="zigzag-card reveal">
+        <div class="zigzag-visual">
+          <div class="zigzag-icon-box"><i class="fas fa-user-tie"></i></div>
+        </div>
+        <div class="zigzag-content">
+          <span class="zigzag-role">Pengasuh Santri Putra</span>
+          <h2 class="zigzag-name">Ky. Mochammad Bachtiar Rifa'i<br>& Ustadzah Neng Siti Mariah</h2>
+          <p class="zigzag-desc">
+            Mengemban amanah sebagai "Orang Tua" kedua bagi seluruh santriwan. Fokus utama beliau adalah pembentukan mentalitas baja, kedisiplinan ibadah, dan penguasaan kitab kuning dasar hingga lanjutan. Beliau terjun langsung mengawasi sholat berjamaah 5 waktu dan kegiatan sorogan malam hari.
+          </p>
+          <div class="focus-list">
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Penegakan Disiplin Syariat</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Sorogan Kitab Kuning</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Mentalitas Kemandirian</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Kepemimpinan (Leadership)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zigzag-card reveal">
+        <div class="zigzag-visual">
+          <div class="zigzag-icon-box" style="background:var(--gold);"><i class="fas fa-female"></i></div>
+        </div>
+        <div class="zigzag-content">
+          <span class="zigzag-role">Pengasuh Santri Putri</span>
+          <h2 class="zigzag-name">Uzh. Hj. Yuyun Yuningsih, M.Pd.<br>& Ust. Ahmad Muttaqin, S.Pd.I.</h2>
+          <p class="zigzag-desc">
+            Membimbing santriwati dengan pendekatan keibuan yang penuh kasih namun tegas dalam prinsip. Fokus pembinaan meliputi fiqih wanita (haid, nifas, istihadoh), tahfidz Al-Qur'an, serta etika dan adab pergaulan muslimah. Beliau memastikan asrama putri menjadi lingkungan yang aman dan nyaman untuk tumbuh kembang.
+          </p>
+          <div class="focus-list">
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Fiqih Wanita (Unnisa)</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Program Tahfidz Qur'an</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Adab & Etika Muslimah</div>
+            <div class="focus-item"><i class="fas fa-check-circle"></i> Keterampilan Tata Boga/Busana</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-heading reveal"><h3>Birokrasi & Manajemen</h3></div>
+    <div class="staff-container">
+      
+      <div class="staff-panel reveal">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-file-contract"></i></div>
+          <div class="panel-title">
+            <span>Sekretariat Pesantren</span>
+            <h4>Muhamad Mahfudz, S.E.</h4>
+          </div>
+        </div>
+        <div class="staff-desc">
+          <p>Bertindak sebagai pusat data dan administrasi sentral yayasan. Peran ini sangat vital dalam menjamin legalitas kelembagaan dan validitas data santri di mata negara (Kemenag/Kemdikbud).</p>
+          <ul class="task-list">
+            <li>Pengelolaan Data Induk Santri (EMIS & Dapodik).</li>
+            <li>Korespondensi dan Arsip Surat Resmi Yayasan.</li>
+            <li>Humas dan Hubungan Antar Lembaga.</li>
+            <li>Penerbitan Dokumen Resmi (Ijazah, Raport, KTS).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="staff-panel reveal" style="transition-delay: 0.1s;">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-coins"></i></div>
+          <div class="panel-title">
+            <span>Bendahara Yayasan</span>
+            <h4>Ustadz Ahmad Munjid & Uzh. Ina</h4>
+          </div>
+        </div>
+        <div class="staff-desc">
+          <p>Penjaga amanah harta umat. Bertanggung jawab mengelola sirkulasi keuangan pesantren dengan prinsip transparansi, akuntabilitas, dan efisiensi demi keberlangsungan program pendidikan.</p>
+          <ul class="task-list">
+            <li>Pengelolaan Pembayaran Syahriah (SPP) & Makan Santri.</li>
+            <li>Perencanaan Anggaran Belanja (RAB) Tahunan.</li>
+            <li>Laporan Keuangan Pembangunan & Operasional.</li>
+            <li>Manajemen Penggajian Guru & Asatidz.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-heading reveal"><h3>Divisi Operasional & Lapangan</h3><p>Ujung tombak pelaksana harian aktivitas pondok.</p></div>
+    <div class="ops-grid reveal">
+      
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-user-shield"></i></div>
+        <h4>Keamanan (Qismul Amni)</h4>
+        <p>Bertugas 24 jam menjaga kondusivitas lingkungan, mengatur perizinan keluar-masuk santri, serta menindak pelanggaran indisipliner sesuai "Qanun" (Aturan) pondok.</p>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-pray"></i></div>
+        <h4>Bagian Ubudiyah</h4>
+        <p>Motor penggerak kegiatan ibadah. Bertugas membangunkan santri untuk Qiyamul Lail, mengabsen sholat berjamaah, serta mengkoordinir kegiatan yasinan dan tahlil.</p>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-school"></i></div>
+        <h4>Kepala Madrasah (MTs/SMK)</h4>
+        <p>Penanggung jawab akademik formal. Memastikan Kurikulum Nasional berjalan beriringan dengan kegiatan kepesantrenan tanpa tumpang tindih.</p>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-utensils"></i></div>
+        <h4>Logistik & Dapur</h4>
+        <p>Pahlawan tanpa tanda jasa yang memastikan ribuan piring nasi tersedia tepat waktu 3x sehari dengan menu yang sehat, halal, dan bergizi bagi santri.</p>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-broom"></i></div>
+        <h4>Kebersihan (K3)</h4>
+        <p>Mengkoordinir piket harian santri (Roan) untuk menjaga kebersihan asrama, kelas, dan lingkungan masjid agar nyaman untuk ditempati.</p>
+      </div>
+
+      <div class="ops-card">
+        <div class="ops-icon-big"><i class="fas fa-briefcase-medical"></i></div>
+        <h4>Poskestren</h4>
+        <p>Pos Kesehatan Pesantren yang menangani pertolongan pertama (P3K) dan perawatan bagi santri yang mengalami sakit ringan di asrama.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <h2 style="font-family:'Cabinet Grotesk'; font-size: 2rem; margin-bottom: 10px;">MANARUL HIDAYAH</h2>
+    <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Jl. Maja-Jasinga Km.15, Kp. Pasir Buah, Lebak, Banten.</p>
+    <div style="margin-bottom: 40px; font-size: 1.5rem;">
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-whatsapp"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-instagram"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-facebook"></i></a>
+    </div>
+    <a href="index.html" class="btn-ppdb-nav" style="background: white; color: var(--green) !important;">KEMBALI KE HOME</a>
+    <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 Yayasan Pendidikan Islam Manarul Hidayah</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggleMenu() { document.getElementById("navMenu").classList.toggle("active"); }
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
