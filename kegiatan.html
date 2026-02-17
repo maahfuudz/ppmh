@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeri Kegiatan - Manarul Hidayah</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  /* --- CORE SETUP --- */
+  :root { --green: #5C6F2B; --dark: #1a210d; --cream: #F2F0E9; --gold: #D4AF37; --white: #ffffff; --glass: rgba(255, 255, 255, 0.95); }
+  body { margin: 0; font-family: 'General Sans', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.6; }
+  .fw-buster { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* --- NAVBAR --- */
+  nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; }
+  .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Cabinet Grotesk', sans-serif; font-size: 1.5rem; color: var(--green); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .nav-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
+  .nav-links a:hover { color: var(--green); }
+  .btn-ppdb-nav { background: var(--green); color: white !important; padding: 8px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; }
+  .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+  /* --- HEADER --- */
+  .page-header { height: 40vh; display: flex; align-items: center; justify-content: center; background: var(--dark); position: relative; overflow: hidden; color: white; text-align: center; }
+  .header-bg { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+  .header-content { position: relative; z-index: 2; padding: 0 20px; margin-top: 40px; }
+  .header-title { font-family: 'Cabinet Grotesk'; font-size: 3.5rem; margin-bottom: 5px; line-height: 1; }
+  .header-desc { font-size: 1rem; color: #ccc; max-width: 600px; margin: 0 auto; }
+
+  /* --- GALERI MASONRY --- */
+  .gallery-sec { padding: 60px 5%; background: var(--white); min-height: 100vh; }
+  .masonry-grid { column-count: 4; column-gap: 20px; }
+  .masonry-item { break-inside: avoid; margin-bottom: 20px; position: relative; border-radius: 15px; overflow: hidden; cursor: pointer; background: #f0f0f0; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+  .masonry-item:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+  .masonry-item img { width: 100%; height: auto; display: block; transition: transform 0.6s ease; }
+  .masonry-item:hover img { transform: scale(1.05); }
+  .gallery-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent); padding: 50px 20px 20px; color: white; opacity: 0; transition: 0.4s; }
+  .masonry-item:hover .gallery-overlay { opacity: 1; }
+  .gal-date { font-size: 0.65rem; font-weight: bold; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 5px; letter-spacing: 1px; }
+  .gal-title { font-family: 'Cabinet Grotesk'; font-size: 1.1rem; line-height: 1.2; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+  /* --- FOOTER --- */
+  footer { background: var(--dark); color: white; padding: 80px 5%; text-align: center; }
+  .footer-links i { font-size: 1.5rem; margin: 0 15px; transition: 0.3s; color: white; cursor: pointer; }
+
+  /* MOBILE */
+  @media (max-width: 1100px) { .masonry-grid { column-count: 3; } }
+  @media (max-width: 900px) {
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
+    .nav-links.active { display: flex; }
+    .mobile-toggle { display: block; }
+    .page-header { height: 30vh; }
+    .header-title { font-size: 2.5rem; }
+    .masonry-grid { column-count: 2; column-gap: 10px; }
+    .masonry-item { margin-bottom: 10px; border-radius: 10px; }
+    .gallery-overlay { padding: 40px 10px 10px; opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); } 
+    .gal-date { font-size: 0.5rem; } .gal-title { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fw-buster">
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-mosque"></i> MANARUL HIDAYAH</div>
+      <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#profil">Profil</a></li>
+        <li><a href="index.html#brosur">Pendaftaran</a></li>
+        <li><a href="#" style="color:var(--green);">Kegiatan</a></li>
+        <li><a href="index.html#berita">Berita</a></li>
+        <li><a href="index.html#kontak">Kontak</a></li>
+        <li><a href="#" class="btn-ppdb-nav">DAFTAR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <img src="https://image2url.com/r2/default/images/1771309577713-1a9735f2-18c0-419d-851a-8fec8ef9c9fa.png" class="header-bg" alt="Galeri">
+    <div class="header-content reveal">
+      <h1 class="header-title">Dokumentasi</h1>
+      <p class="header-desc">Kumpulan memori kegiatan, prestasi, dan kehidupan santri.</p>
+    </div>
+  </header>
+
+  <section class="gallery-sec">
+    <div class="masonry-grid reveal">
+      
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771309656185-81c2aed1-593b-49f7-83df-b2308a355876.png" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">12 FEB 2026</span><h4 class="gal-title">Lomba Mading</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310605919-038466f7-5d61-4583-b2ee-084160944b1d.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 JAN 2026</span><h4 class="gal-title">Upacara Bendera</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310784723-126078af-d8d7-4edf-a79a-a99090309ecf.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 JAN 2026</span><h4 class="gal-title">Wisuda Tahfidz</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310810018-7c42d0a3-ce46-4fdb-82fc-82c494fd1afa.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 JAN 2026</span><h4 class="gal-title">Liga Futsal Santri</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310844855-d33c9153-c78c-4d7a-b6ed-2df04cee85e8.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">01 FEB 2026</span><h4 class="gal-title">Latihan Pidato</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310913132-234a692b-e97a-49fd-8ece-0b007b3a22e2.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 FEB 2026</span><h4 class="gal-title">Praktik Komputer</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310964787-adcfdcdd-5e67-4553-971e-2c82aa13a6e4.png" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">14 FEB 2026</span><h4 class="gal-title">Menulis Kaligrafi</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771310999443-4ed928c5-af29-4fb0-a01b-59a5ee7e4fe3.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 FEB 2026</span><h4 class="gal-title">Bahtsul Masail</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311070476-88554c39-a1e5-43f5-8e0b-09d5fb3d4f3c.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 FEB 2026</span><h4 class="gal-title">Pawai Obor</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311091487-97c6e2a9-ef53-4ebc-bfee-ddbbda60717e.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">01 MAR 2026</span><h4 class="gal-title">Lari Pagi</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311210524-5bd1b108-05ef-43ba-bda7-948fdac176a0.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 MAR 2026</span><h4 class="gal-title">Rapat Organisasi</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311248338-c4fdd87e-bb38-4de3-a241-643d5ba3a316.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 MAR 2026</span><h4 class="gal-title">Panahan Sunnah</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311292723-f5bee812-4314-49d2-a0ae-1166f3bd5ca1.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 MAR 2026</span><h4 class="gal-title">Belajar Online</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311337984-1f6d12bb-d2d7-41e1-92ea-0ee70351d69d.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 MAR 2026</span><h4 class="gal-title">Diskusi Kelompok</h4></div>
+      </div>
+      
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311377713-925dd8b2-0038-4d25-87fd-9b27d899cc50.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">22 MAR 2026</span><h4 class="gal-title">Kelas Kesenian</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311393505-1887cb48-8523-499e-af4e-55e024b911da.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 MAR 2026</span><h4 class="gal-title">Makan Bersama</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311410051-40289b59-37a0-4254-a8f3-d086ca599f23.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">28 MAR 2026</span><h4 class="gal-title">Gotong Royong</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311426950-20303645-a5a1-4a19-93da-ff0328dcbec3.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">01 APR 2026</span><h4 class="gal-title">Lab Sains</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311445860-e13880d8-aed0-42cc-a3d6-573429a65beb.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 APR 2026</span><h4 class="gal-title">Rapat Guru</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311464971-8325d716-bc7a-413b-a2c4-f974aefd576f.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 APR 2026</span><h4 class="gal-title">Kunjungan Industri</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311484522-44c5b822-1a47-4009-9c81-81e2c94c2095.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">12 APR 2026</span><h4 class="gal-title">Bakar Sampah</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311540028-12b369da-8f38-4214-8cfe-eea5073dbf4f.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 APR 2026</span><h4 class="gal-title">Pramuka Santri</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311632920-b8c3ae09-864f-4e58-a144-46edfab3277a.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 APR 2026</span><h4 class="gal-title">Seni Hadroh</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311663576-7b152fbf-ce8d-4597-b76e-d0d7567b8733.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 APR 2026</span><h4 class="gal-title">Ujian Kenaikan</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311683252-6b6d253c-f898-4161-812f-0dcf51d465b4.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">01 MEI 2026</span><h4 class="gal-title">Kelas Online</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311701768-78c6b09f-dabb-4f18-8df3-af2ddffbf206.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 MEI 2026</span><h4 class="gal-title">Perpustakaan</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771311753950-beed064a-e8c8-4e71-b919-30198d7fb8ff.png" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 MEI 2026</span><h4 class="gal-title">Belajar Mengajar</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771312699758-05d47cbb-3954-45bd-936e-4f09a4ae1e5a.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 MEI 2026</span><h4 class="gal-title">Minum Kopi Guru</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771312916726-4f6793d8-bede-49ee-861f-99509504209d.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 MEI 2026</span><h4 class="gal-title">Istirahat Santri</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771312934376-a3f58196-00d0-426d-9dcf-60b47da19985.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 MEI 2026</span><h4 class="gal-title">Membaca Buku</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771312952607-57f6d627-2b0e-4675-8656-47776b1676d2.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">01 JUN 2026</span><h4 class="gal-title">Tumpukan Kitab</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771312983457-090cb8c0-db91-4d21-a48d-e662eb88bbbb.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 JUN 2026</span><h4 class="gal-title">Belajar Kelompok</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313001695-7a9911f1-92ec-47e1-8a93-502212dc8107.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 JUN 2026</span><h4 class="gal-title">Menulis Catatan</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313358916-20d05873-b6f5-4f4f-b0a3-f72c48e375cf.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 JUN 2026</span><h4 class="gal-title">Diskusi Ilmiah</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313405435-311410af-bf0b-48a2-b29a-edf9ce579c0c.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 JUN 2026</span><h4 class="gal-title">Membaca Quran</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313430864-109292bf-d373-4570-ac80-8e9d1111ff07.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 JUN 2026</span><h4 class="gal-title">Diskusi Santai</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313457033-0e9565b1-c43d-4b27-8d44-16582bf56274.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">30 JUN 2026</span><h4 class="gal-title">Cek Nilai</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313477581-38a56c71-d3a8-46a4-a273-7aaba1e70d8a.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 JUL 2026</span><h4 class="gal-title">Alumni Bertemu</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313500251-4fc57a07-6656-4a57-8a89-90916ae224bb.jpg" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 JUL 2026</span><h4 class="gal-title">Foto Bersama</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313583700-656b4ece-55c0-4615-9d1d-9bc2bd716973.png" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">15 JUL 2026</span><h4 class="gal-title">Rapat Kerja</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313669954-294b1cc0-5e1f-430e-b269-732dd3421a18.blob" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">20 JUL 2026</span><h4 class="gal-title">Musyawarah</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313846244-e0885bd5-832d-4fed-9b9d-13f32e9f54c6.blob" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">25 JUL 2026</span><h4 class="gal-title">Membaca Bersama</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313877686-d8803c11-127c-4436-a86e-38d390405ecd.blob" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">30 JUL 2026</span><h4 class="gal-title">Sholat Jamaah</h4></div>
+      </div>
+
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313925778-152e3914-8746-4af4-8b5e-b745c839e76e.blob" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">05 AGT 2026</span><h4 class="gal-title">Wisuda Akbar</h4></div>
+      </div>
+      
+      <div class="masonry-item">
+        <img src="https://image2url.com/r2/default/images/1771313930057-785739b1-bbe9-45e0-a6f0-085f879ed177.blob" alt="Kegiatan">
+        <div class="gallery-overlay"><span class="gal-date">10 AGT 2026</span><h4 class="gal-title">Kerja Bakti</h4></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <h2 style="font-family:'Cabinet Grotesk'; font-size: 2rem; margin-bottom: 10px;">MANARUL HIDAYAH</h2>
+    <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Jl. Maja-Jasinga Km.15, Kp. Pasir Buah, Lebak, Banten.</p>
+    <div style="margin-bottom: 40px; font-size: 1.5rem;">
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-whatsapp"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-instagram"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-facebook"></i></a>
+    </div>
+    <a href="index.html" class="btn-ppdb-nav" style="background: white; color: var(--green) !important;">KEMBALI KE HOME</a>
+    <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 Yayasan Pendidikan Islam Manarul Hidayah</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggleMenu() { document.getElementById("navMenu").classList.toggle("active"); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
