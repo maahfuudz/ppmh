@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabar Berita - Manarul Hidayah</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  /* --- 1. CORE SETUP --- */
+  :root {
+    --bg-color: #FdfcF8;
+    --dark: #1a210d;
+    --glass: rgba(255, 255, 255, 0.95);
+    
+    /* PALET WARNA ISLAMI (EARTHY) */
+    --c-emerald: #2d6a4f;   /* Hijau Tua */
+    --c-terra: #bc6c25;     /* Bata/Tanah */
+    --c-teal: #2a9d8f;      /* Tosca Kalem */
+    --c-gold: #cca000;      /* Emas Gelap */
+    --c-maroon: #821131;    /* Burgundy (Brand Identity) */
+  }
+
+  body { margin: 0; font-family: 'General Sans', sans-serif; background: var(--bg-color); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.7; }
+  .fw-buster { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* --- NAVBAR --- */
+  nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; }
+  .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Cabinet Grotesk', sans-serif; font-size: 1.5rem; color: var(--c-emerald); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .nav-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
+  .nav-links a:hover { color: var(--c-emerald); }
+  .btn-ppdb-nav { background: var(--c-emerald); color: white !important; padding: 8px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; }
+  .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+  /* --- HEADER --- */
+  .page-header {
+    height: 45vh; display: flex; align-items: center; justify-content: center;
+    background: var(--dark); position: relative; overflow: hidden; color: white; text-align: center;
+  }
+  .header-bg { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+  .header-content { position: relative; z-index: 2; padding: 0 20px; margin-top: 40px; }
+  .header-title { font-family: 'Cabinet Grotesk'; font-size: 3.5rem; margin-bottom: 5px; line-height: 1; }
+  .header-desc { font-size: 1.1rem; color: #ccc; max-width: 600px; margin: 0 auto; }
+
+  /* --- MASONRY NEWS LAYOUT --- */
+  .news-section { padding: 60px 5%; min-height: 100vh; }
+  
+  .masonry-container {
+    column-count: 3; /* PC: 3 Kolom */
+    column-gap: 25px;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  /* KARTU BERITA */
+  .news-card {
+    break-inside: avoid; /* Jangan potong kartu */
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: 0.3s;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  .news-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+
+  .news-thumb { width: 100%; display: block; height: auto; transition: 0.5s; }
+  .news-card:hover .news-thumb { filter: brightness(1.05); }
+  
+  .news-body { padding: 30px; }
+
+  .news-meta { 
+    display: flex; justify-content: space-between; align-items: center; 
+    font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px;
+  }
+  
+  .news-title { 
+    font-family: 'Cabinet Grotesk'; font-size: 1.6rem; line-height: 1.2; 
+    margin-bottom: 15px; color: var(--dark); 
+  }
+
+  /* Toggle Content */
+  .news-excerpt { font-size: 1rem; color: #666; margin-bottom: 15px; line-height: 1.6; }
+  
+  .news-full {
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.5s ease;
+    font-size: 0.95rem; color: #555; text-align: justify;
+    border-top: 1px dashed #eee;
+  }
+  
+  .news-card.open .news-full {
+    max-height: 1500px;
+    opacity: 1; margin-top: 20px; padding-top: 20px;
+  }
+
+  .btn-read {
+    background: none; border: none; padding: 0;
+    font-family: 'General Sans'; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    margin-top: 10px; transition: 0.3s;
+  }
+  .btn-read i { transition: 0.3s; font-size: 0.8rem; }
+  .news-card.open .btn-read i { transform: rotate(180deg); }
+
+  /* --- DYNAMIC COLORING (5 COLORS CYCLE) --- */
+  
+  /* 1. Emerald */
+  .news-card:nth-child(5n+1) { border-top: 5px solid var(--c-emerald); }
+  .news-card:nth-child(5n+1) .news-meta, .news-card:nth-child(5n+1) .btn-read { color: var(--c-emerald); }
+  
+  /* 2. Terracotta */
+  .news-card:nth-child(5n+2) { border-top: 5px solid var(--c-terra); }
+  .news-card:nth-child(5n+2) .news-meta, .news-card:nth-child(5n+2) .btn-read { color: var(--c-terra); }
+
+  /* 3. Teal */
+  .news-card:nth-child(5n+3) { border-top: 5px solid var(--c-teal); }
+  .news-card:nth-child(5n+3) .news-meta, .news-card:nth-child(5n+3) .btn-read { color: var(--c-teal); }
+
+  /* 4. Gold */
+  .news-card:nth-child(5n+4) { border-top: 5px solid var(--c-gold); }
+  .news-card:nth-child(5n+4) .news-meta, .news-card:nth-child(5n+4) .btn-read { color: var(--c-gold); }
+
+  /* 5. Maroon (Brand) */
+  .news-card:nth-child(5n+5) { border-top: 5px solid var(--c-maroon); }
+  .news-card:nth-child(5n+5) .news-meta, .news-card:nth-child(5n+5) .btn-read { color: var(--c-maroon); }
+
+
+  /* --- FOOTER --- */
+  footer { background: var(--dark); color: white; padding: 80px 5%; text-align: center; }
+  .footer-links i { font-size: 1.5rem; margin: 0 15px; transition: 0.3s; color: white; cursor: pointer; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
+    .nav-links.active { display: flex; }
+    .mobile-toggle { display: block; }
+    .page-header { height: 35vh; }
+    .header-title { font-size: 2.5rem; }
+    
+    .masonry-container { column-count: 1; } /* Stack ke bawah di HP */
+  }
+</style>
+</head>
+<body>
+
+<div class="fw-buster">
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-mosque"></i> MANARUL HIDAYAH</div>
+      <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#profil">Profil</a></li>
+        <li><a href="index.html#brosur">Pendaftaran</a></li>
+        <li><a href="index.html#kegiatan">Kegiatan</a></li>
+        <li><a href="#" style="color:var(--c-emerald);">Berita</a></li>
+        <li><a href="index.html#kontak">Kontak</a></li>
+        <li><a href="#" class="btn-ppdb-nav">DAFTAR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <img src="https://image2url.com/r2/default/images/1771315691047-5c5a0a69-b7a7-4090-9c94-32e31c1dc644.png" class="header-bg" alt="Berita">
+    <div class="header-content reveal">
+      <h1 class="header-title">Warta Pesantren</h1>
+      <p class="header-desc">Kabar terkini, prestasi, dan rekam jejak Pondok Pesantren Manarul Hidayah.</p>
+    </div>
+  </header>
+
+  <section class="news-section">
+    <div class="masonry-container">
+
+      <article class="news-card reveal">
+        <img src="https://image2url.com/r2/default/images/1771315812190-534970ef-937e-4138-8afd-cc779e4b1c70.png" class="news-thumb" alt="Wisuda">
+        <div class="news-body">
+          <div class="news-meta">
+            <span><i class="fas fa-graduation-cap"></i> Haflah</span>
+            <span>31 Des 2025</span>
+          </div>
+          <h2 class="news-title">Mencetak Generasi Rabbani: Semarak Walimah Al-Imtihan</h2>
+          <div class="news-excerpt">
+            PP Manarul Hidayah sukses menggelar Walimah At-Tafarruq dan Al-Imtihan sebagai puncak apresiasi tahunan.
+          </div>
+          
+          <div class="news-full">
+            <p>Sabtu, 31 Desember 2025 menjadi hari yang penuh haru dan bahagia di lingkungan Pondok Pesantren Manarul Hidayah. Acara <strong>Walimah At-Tafarruq dan Al-Imtihan</strong> digelar sebagai bentuk tasyakur atas selesainya masa studi para santri kelas akhir, baik tingkat MTs maupun SMK.</p>
+            <p>Panggung utama yang megah menjadi saksi bisu prosesi wisuda ratusan santriawan dan santriwati. Pimpinan Yayasan, Kyai Toyib Rasilan, dalam sambutannya berpesan, "Kelulusan ini bukanlah akhir dari belajar, melainkan awal dari pengabdian yang sesungguhnya di masyarakat. Jadilah Generasi Rabbani yang tidak hanya cerdas akalnya, tapi juga bersih hatinya."</p>
+            <p>Acara ditutup dengan doa bersama dan sungkeman kepada orang tua yang membuat suasana menjadi sangat emosional, menandakan kuatnya ikatan batin antara santri, guru, dan orang tua.</p>
+          </div>
+
+          <button class="btn-read" onclick="toggleNews(this)">
+            <span>Baca Selengkapnya</span> <i class="fas fa-chevron-down"></i>
+          </button>
+        </div>
+      </article>
+
+      <article class="news-card reveal">
+        <img src="https://image2url.com/r2/default/images/1771315849910-6f437fc9-67cc-4c68-90aa-38ded24d520f.png" class="news-thumb" alt="Seni">
+        <div class="news-body">
+          <div class="news-meta">
+            <span><i class="fas fa-palette"></i> Prestasi</span>
+            <span>15 Feb 2026</span>
+          </div>
+          <h2 class="news-title">Kreativitas Santri Memukau, Mading Isra Mi'raj Raih Juara 2</h2>
+          <div class="news-excerpt">
+            Tim mading santri sukses menyabet Juara 2 lewat visualisasi apik bertema perjalanan suci Isra Mi'raj.
+          </div>
+          <div class="news-full">
+            <p>Prestasi membanggakan kembali ditorehkan oleh tim kreatif santri Manarul Hidayah dalam ajang Lomba Majalah Dinding (Mading) tingkat Kabupaten Lebak. Mengusung tema <em>"Refleksi Perjalanan Suci di Era Digital"</em>, karya santri ini berhasil memukau dewan juri.</p>
+            <p>Mading ini dibuat menggunakan 80% bahan daur ulang, menampilkan miniatur Buraq dan Masjidil Aqsa dengan detail yang mengagumkan. "Kami ingin menyampaikan pesan bahwa Isra Mi'raj bukan sekadar dongeng, tapi peristiwa iman yang harus divisualisasikan dengan indah," ujar ketua tim mading.</p>
+            <p>Kemenangan ini menjadi motivasi bagi santri lain untuk terus mengembangkan bakat seni dan jurnalistik di sela-sela kesibukan mengaji.</p>
+          </div>
+          <button class="btn-read" onclick="toggleNews(this)"><span>Baca Selengkapnya</span> <i class="fas fa-chevron-down"></i></button>
+        </div>
+      </article>
+
+      <article class="news-card reveal">
+        <img src="https://image2url.com/r2/default/images/1771315880515-43087218-043e-414c-a2f5-1a6f0fbedf94.png" class="news-thumb" alt="Pendaftaran">
+        <div class="news-body">
+          <div class="news-meta">
+            <span><i class="fas fa-bullhorn"></i> Info PSB</span>
+            <span>17 Feb 2026</span>
+          </div>
+          <h2 class="news-title">Resmi Dibuka! PPDB Manarul Hidayah T.A. 2026/2027</h2>
+          <div class="news-excerpt">
+            Panggilan untuk calon pemimpin masa depan! Kesempatan emas bagi lulusan SD/MI dan SMP/MTs.
+          </div>
+          <div class="news-full">
+            <p>Pondok Pesantren Manarul Hidayah secara resmi membuka Penerimaan Peserta Didik Baru (PPDB) untuk Tahun Ajaran 2026/2027. Kami mengundang putra-putri terbaik bangsa untuk bergabung dalam lingkungan pendidikan yang mengintegrasikan ilmu agama (Salaf) dan ilmu umum (Formal).</p>
+            <p><strong>Jenjang Pendidikan:</strong><br>1. Madrasah Tsanawiyah (MTs) - Setara SMP<br>2. Sekolah Menengah Kejuruan (SMK) - Jurusan TKJ & Logistik</p>
+            <p><strong>Fasilitas Unggulan:</strong> Asrama representatif, Lab Komputer, BLK Komunitas, dan Bimbingan Kitab Kuning Intensif. Segera daftarkan diri Anda sebelum kuota terpenuhi. Pendaftaran dapat dilakukan secara online melalui website ini atau datang langsung ke sekretariat.</p>
+          </div>
+          <button class="btn-read" onclick="toggleNews(this)"><span>Baca Selengkapnya</span> <i class="fas fa-chevron-down"></i></button>
+        </div>
+      </article>
+
+      <article class="news-card reveal">
+        <img src="https://image2url.com/r2/default/images/1771316071559-04862c2c-9fda-4d21-83c0-5e70388e3807.jpeg" class="news-thumb" alt="Ziarah">
+        <div class="news-body">
+          <div class="news-meta">
+            <span><i class="fas fa-history"></i> Kilas Balik</span>
+            <span>Nov 2021</span>
+          </div>
+          <h2 class="news-title">Mengenang Keteguhan Ziarah Kubur di Masa Pandemi</h2>
+          <div class="news-excerpt">
+            Flashback 2021: Ketika masker dan jarak fisik tak menghalangi munajat doa para santri.
+          </div>
+          <div class="news-full">
+            <p>Momen ini tak akan terlupakan dalam sejarah Manarul Hidayah. Pada tahun 2021, di tengah puncak pandemi Covid-19, tradisi ziarah kubur ke makam pendiri tetap dilaksanakan dengan protokol kesehatan yang sangat ketat.</p>
+            <p>Seluruh santri mengenakan masker, berbaris dengan jarak aman, namun lantunan tahlil dan doa tetap menggema syahdu. Kegiatan ini bukan sekadar ritual, melainkan bentuk ikhtiar batin (mujahadah) memohon keselamatan agar wabah segera diangkat dari bumi Indonesia.</p>
+            <p>"Meski wajah tertutup masker, hati kami terbuka lebar memohon ampunan dan perlindungan Allah," kenang salah satu alumni angkatan Corona.</p>
+          </div>
+          <button class="btn-read" onclick="toggleNews(this)"><span>Baca Selengkapnya</span> <i class="fas fa-chevron-down"></i></button>
+        </div>
+      </article>
+
+      <article class="news-card reveal">
+        <img src="https://image2url.com/r2/default/images/1771327192444-17b2c90c-5952-4296-bae8-7c03cda21660.jpg" class="news-thumb" alt="Pidato">
+        <div class="news-body">
+          <div class="news-meta">
+            <span><i class="fas fa-microphone-alt"></i> Ekstrakurikuler</span>
+            <span>15 Feb 2026</span>
+          </div>
+          <h2 class="news-title">Mengasah Mentalitas Dakwah Melalui Muhadhoroh</h2>
+          <div class="news-excerpt">
+            Malam Ahad menjadi ajang unjuk gigi kemampuan retorika santri.
+          </div>
+          <div class="news-full">
+            <p>Salah satu ciri khas santri Manarul Hidayah adalah keberanian tampil di depan umum. Melalui kegiatan rutin <em>Muhadhoroh</em> (Latihan Pidato), santri ditempa mentalnya untuk menjadi juru dakwah yang handal.</p>
+            <p>Pekan ini, digelar Muhadhoroh Kubro di halaman utama. Perwakilan dari setiap kamar menampilkan pidato dalam Bahasa Indonesia, Bahasa Arab, dan Bahasa Inggris. Tidak hanya pidato, acara juga dimeriahkan dengan MC formal, pembacaan puisi, dan drama komedi santri yang mengundang gelak tawa namun sarat makna.</p>
+            <p>Kegiatan ini wajib bagi seluruh santri sebagai bekal <em>public speaking</em> saat terjun ke masyarakat nanti.</p>
+          </div>
+          <button class="btn-read" onclick="toggleNews(this)"><span>Baca Selengkapnya</span> <i class="fas fa-chevron-down"></i></button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer>
+    <h2 style="font-family:'Cabinet Grotesk'; font-size: 2rem; margin-bottom: 10px;">MANARUL HIDAYAH</h2>
+    <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Jl. Maja-Jasinga Km.15, Kp. Pasir Buah, Lebak, Banten.</p>
+    <div style="margin-bottom: 40px; font-size: 1.5rem;">
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-whatsapp"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-instagram"></i></a>
+      <a href="#" style="color:white; margin:0 10px;"><i class="fab fa-facebook"></i></a>
+    </div>
+    <a href="index.html" class="btn-ppdb-nav" style="background: white; color: var(--c-emerald) !important;">KEMBALI KE HOME</a>
+    <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 Yayasan Pendidikan Islam Manarul Hidayah</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggleMenu() { document.getElementById("navMenu").classList.toggle("active"); }
+
+  // LOGIKA TOGGLE BERITA
+  function toggleNews(btn) {
+    const card = btn.closest('.news-card');
+    const span = btn.querySelector('span');
+    const icon = btn.querySelector('i');
+    
+    // Toggle class open pada card
+    card.classList.toggle('open');
+    
+    if (card.classList.contains('open')) {
+      span.innerText = "Tutup Berita";
+      icon.classList.remove('fa-chevron-down');
+      icon.classList.add('fa-chevron-up');
+    } else {
+      span.innerText = "Baca Selengkapnya";
+      icon.classList.remove('fa-chevron-up');
+      icon.classList.add('fa-chevron-down');
+      // Scroll sedikit biar enak
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
