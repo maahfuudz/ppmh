@@ -27,7 +27,7 @@
   .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
   .stagger-item { opacity: 0; transform: translateY(30px); transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
   .stagger-item.active { opacity: 1; transform: translateY(0); }
-  
+   
   @keyframes float { 
     0% { transform: translate(0, 0) rotate(0deg); } 
     33% { transform: translate(30px, -50px) rotate(10deg); } 
@@ -142,7 +142,7 @@
   }
   .brosur-mockup:hover { transform: rotate(0deg) scale(1.02); }
   .brosur-mockup img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  
+   
   /* Kanan: Narasi & Tombol */
   .brosur-right h2 { font-family: 'Cabinet Grotesk'; font-size: 3rem; color: var(--dark); margin-bottom: 20px; line-height: 1; }
   .brosur-right p { font-size: 1.1rem; color: #666; margin-bottom: 30px; line-height: 1.6; }
@@ -159,7 +159,7 @@
   /* Group Tombol Pendaftaran */
   .reg-group { display: flex; flex-direction: column; gap: 15px; }
   .reg-label { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--green); margin-bottom: 10px; letter-spacing: 1px; }
-  
+   
   .btn-reg-item {
     display: flex; justify-content: space-between; align-items: center;
     padding: 20px 25px; border: 1px solid #ddd; border-radius: 15px;
@@ -218,8 +218,8 @@
   .footer-links i:hover { color: var(--green); transform: scale(1.2); }
 
   /* ========================================================= 
-     PERUBAHAN KHUSUS MOBILE (DIPERKECIL) 
-     ========================================================= */
+      PERUBAHAN KHUSUS MOBILE (DIPERKECIL) 
+      ========================================================= */
   @media (max-width: 900px) {
     /* Navbar */
     .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
@@ -274,7 +274,7 @@
         grid-template-columns: 1.2fr 0.8fr; /* Kiri Teks 1.2, Kanan Gambar 0.8 */
         gap: 10px; 
     }
-    
+     
     /* Font Teks Sejarah Sangat Kecil biar muat */
     .narrative-text h3 { font-size: 0.9rem !important; margin-bottom: 5px; }
     .narrative-text p { 
@@ -304,16 +304,16 @@
         padding-right: 15px;
         margin-top: 20px;
     }
-    
+     
     /* Sembunyikan Scrollbar */
     .news-grid::-webkit-scrollbar { display: none; }
-    
+     
     .news-card {
         min-width: 45%; /* Muat 2 kartu di layar (45% x 2 + gap) */
         scroll-snap-align: start;
         flex-shrink: 0;
     }
-    
+     
     .news-thumb { height: 100px; }
     .news-body { padding: 10px; }
     .news-date { font-size: 0.5rem; }
@@ -346,7 +346,7 @@
         <li><a href="#brosur">Pendaftaran</a></li>
         <li><a href="#kegiatan">Kegiatan</a></li>
         <li><a href="#berita">Berita</a></li>
-        <li><a href="#kontak">Kontak</a></li>
+        <li><a href="kontak.html">Kontak</a></li>
         <li><a href="#brosur" class="btn-ppdb-nav">DAFTAR</a></li>
       </ul>
     </div>
@@ -419,12 +419,12 @@
           "Kami hadir untuk mencetak generasi yang tidak hanya paham agama, tapi juga siap menghadapi tantangan zaman dengan kemandirian ekonomi."
         </div>
       </div>
-      
+       
       <div class="hist-img-wrapper reveal">
         <div class="hist-img-box">
           <img src="https://image2url.com/r2/default/images/1771220958196-d5beddb4-e06b-4dcd-b89f-3d8c7bebca40.png" alt="Pendiri">
         </div>
-        <a href="LINK_HALAMAN_STRUKTUR_PENGURUS" class="btn-struktur">Lihat Struktur Pengurus Lengkap →</a>
+        <a href="struktur.html" class="btn-struktur">Lihat Struktur Pengurus Lengkap →</a>
       </div>
     </div>
   </section>
@@ -449,7 +449,7 @@
 
         <div class="reg-label">Pilih Jalur Pendaftaran:</div>
         <div class="reg-group">
-          
+           
           <a href="https://forms.gle/i6CyKLNJ8Pjxp4M97" class="btn-reg-item stagger-item">
             <div class="reg-text">
               <strong>Santri Pondok Pesantren</strong>
@@ -541,7 +541,7 @@
             <div class="ekskul-name">Ziarah</div>
           </div>
         </div>
-        <a href="#" class="btn-gallery">Lihat Galeri Lengkap →</a>
+        <a href="kegiatan.html" class="btn-gallery">Lihat Galeri Lengkap →</a>
       </div>
     </div>
   </section>
@@ -557,7 +557,7 @@
           <span class="news-date">31 DES 2025</span>
           <h4>Mencetak Generasi Rabbani: Semarak Walimah Al-Imtihan Santri Manarul Hidayah.</h4>
           <p class="news-excerpt">PP Manarul Hidayah sukses menggelar Walimah At-Tafarruq dan Al-Imtihan pada Sabtu, 31 Desember 2025. Acara ini menjadi puncak apresiasi bagi santri yang telah menyelesaikan masa studinya</p>
-          <a href="#" class="read-more">Baca Selengkapnya</a>
+          <a href="berita.html" class="read-more">Baca Selengkapnya</a>
         </div>
       </div>
       <div class="news-card stagger-item" style="transition-delay: 0.1s;">
@@ -566,7 +566,7 @@
           <span class="news-date">10 FEB 2026</span>
           <h4>Kreativitas Santri Memukau, Mading Isra Mi'raj Manarul Hidayah Raih Juara 2</h4>
           <p class="news-excerpt">Prestasi membanggakan kembali ditorehkan oleh santri Manarul Hidayah. Lewat visualisasi apik bertema perjalanan suci Isra Mi'raj, tim mading sukses menyabet Juara 2 dan menyisihkan peserta lainnya.</p>
-          <a href="#" class="read-more">Baca Selengkapnya</a>
+          <a href="berita.html" class="read-more">Baca Selengkapnya</a>
         </div>
       </div>
       <div class="news-card stagger-item" style="transition-delay: 0.2s;">
@@ -575,13 +575,13 @@
           <span class="news-date">16 FEB 2026</span>
           <h4>Resmi Dibuka! PPDB Pondok Pesantren Manarul Hidayah Tahun Ajaran 2026/2027</h4>
           <p class="news-excerpt">Panggilan untuk calon pemimpin masa depan! PP Manarul Hidayah kini membuka kesempatan emas bagi lulusan SD/MI dan SMP/MTs untuk menimba ilmu agama serta umum.</p>
-          <a href="#" class="read-more">Baca Selengkapnya</a>
+          <a href="berita.html" class="read-more">Baca Selengkapnya</a>
         </div>
       </div>
     </div>
-    
+     
     <div class="news-more-wrapper">
-      <a href="#" class="btn-news-more">Lihat Berita Lainnya <i class="fas fa-arrow-right"></i></a>
+      <a href="berita.html" class="btn-news-more">Lihat Berita Lainnya <i class="fas fa-arrow-right"></i></a>
     </div>
   </section>
 
@@ -592,7 +592,7 @@
   <footer>
     <h2 style="font-family:'Cabinet Grotesk'; font-size: 2rem; margin-bottom: 10px;">MANARUL HIDAYAH</h2>
     <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Jl. Maja-Jasinga Km.15, Kp. Pasir Buah, Lebak, Banten.</p>
-    
+     
     <div style="margin-bottom: 40px; font-size: 1.5rem;">
       <a href="https://wa.link/ovhb8h" style="color:white; margin:0 10px;"><i class="fab fa-whatsapp"></i></a>
       <a href="https://www.instagram.com/ppmanarulhidayah?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" style="color:white; margin:0 10px;"><i class="fab fa-instagram"></i></a>
@@ -662,6 +662,4 @@
 </script>
 
 </body>
-
 </html>
-
