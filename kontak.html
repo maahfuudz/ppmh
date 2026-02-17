@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hubungi Kami - Manarul Hidayah</title>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  /* --- 1. CORE SETUP --- */
+  :root {
+    --bg-color: #FdfcF8;
+    --dark: #1a210d;
+    --glass: rgba(255, 255, 255, 0.95);
+    
+    /* PALET WARNA */
+    --c-emerald: #2d6a4f;
+    --c-terra: #bc6c25;
+    --c-teal: #2a9d8f;
+    --c-gold: #cca000;
+  }
+
+  body { margin: 0; font-family: 'General Sans', sans-serif; background: var(--bg-color); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; line-height: 1.7; }
+  .fw-buster { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+
+  /* --- NAVBAR --- */
+  nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: var(--glass); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 15px 0; }
+  .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Cabinet Grotesk', sans-serif; font-size: 1.5rem; color: var(--c-emerald); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .nav-links { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; align-items: center; }
+  .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
+  .nav-links a:hover { color: var(--c-emerald); }
+  .btn-ppdb-nav { background: var(--c-emerald); color: white !important; padding: 8px 20px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; }
+  .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+  /* --- HEADER --- */
+  .page-header {
+    height: 40vh; display: flex; align-items: center; justify-content: center;
+    background: var(--dark); position: relative; overflow: hidden; color: white; text-align: center;
+  }
+  .header-bg { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+  .header-content { position: relative; z-index: 2; padding: 0 20px; margin-top: 40px; }
+  .header-title { font-family: 'Cabinet Grotesk'; font-size: 3.5rem; margin-bottom: 5px; line-height: 1; }
+  .header-desc { font-size: 1.1rem; color: #ccc; max-width: 600px; margin: 0 auto; }
+
+  /* --- INFO CARDS SECTION --- */
+  .info-sec { padding: 80px 5%; margin-top: -50px; position: relative; z-index: 10; }
+  .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1100px; margin: 0 auto; }
+  
+  .info-card {
+    background: white; padding: 40px 30px; border-radius: 20px; text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08); transition: 0.3s;
+    border-bottom: 5px solid transparent;
+  }
+  .info-card:hover { transform: translateY(-10px); }
+  
+  .info-icon { 
+    width: 70px; height: 70px; background: var(--bg-color); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+    font-size: 1.8rem; color: var(--c-emerald); transition: 0.3s;
+  }
+  .info-card:hover .info-icon { background: var(--c-emerald); color: white; }
+  
+  .info-card h3 { font-family: 'Cabinet Grotesk'; font-size: 1.5rem; margin-bottom: 10px; color: var(--dark); }
+  .info-card p { color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0; }
+  
+  /* Specific Colors per card */
+  .info-card.loc:hover { border-bottom-color: var(--c-terra); }
+  .info-card.mail:hover { border-bottom-color: var(--c-teal); }
+  .info-card.time:hover { border-bottom-color: var(--c-gold); }
+
+  /* --- WHATSAPP ACTION SECTION --- */
+  .wa-sec { padding: 50px 5% 100px; background: var(--bg-color); }
+  .wa-box {
+    background: linear-gradient(135deg, #128C7E, #075E54);
+    border-radius: 30px; padding: 60px; text-align: center; color: white;
+    max-width: 900px; margin: 0 auto; position: relative; overflow: hidden;
+    box-shadow: 0 20px 50px rgba(18, 140, 126, 0.3);
+  }
+  /* Decorative Pattern */
+  .wa-box::before {
+    content:''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+  }
+  .wa-box::after {
+    content:''; position: absolute; bottom: -50px; left: -50px; width: 150px; height: 150px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+  }
+  
+  .wa-content { position: relative; z-index: 2; }
+  .wa-title { font-family: 'Cabinet Grotesk'; font-size: 2.5rem; margin-bottom: 10px; }
+  .wa-desc { font-size: 1.1rem; opacity: 0.9; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  
+  .wa-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+  
+  .btn-wa {
+    display: flex; align-items: center; gap: 10px;
+    background: white; color: #075E54; padding: 15px 30px;
+    border-radius: 50px; text-decoration: none; font-weight: 700;
+    transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  .btn-wa:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); background: #f0fff0; }
+  .btn-wa i { font-size: 1.3rem; }
+
+  /* --- MAP SECTION --- */
+  .map-sec { height: 500px; width: 100%; position: relative; }
+  .map-sec iframe { width: 100%; height: 100%; border: 0; filter: grayscale(20%); }
+  
+  /* Social Float */
+  .social-float {
+    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: white; padding: 15px 30px; border-radius: 50px;
+    display: flex; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .social-link { color: var(--dark); font-size: 1.5rem; transition: 0.3s; }
+  .social-link:hover { transform: scale(1.2); color: var(--c-emerald); }
+
+  /* --- FOOTER --- */
+  footer { background: var(--dark); color: white; padding: 80px 5%; text-align: center; }
+  .footer-links i { font-size: 1.5rem; margin: 0 15px; transition: 0.3s; color: white; cursor: pointer; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: white; flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
+    .nav-links.active { display: flex; }
+    .mobile-toggle { display: block; }
+    
+    .page-header { height: 35vh; }
+    .header-title { font-size: 2.5rem; }
+    
+    .info-grid { grid-template-columns: 1fr; gap: 20px; }
+    .info-sec { margin-top: 0; padding-top: 50px; }
+    
+    .wa-box { padding: 40px 20px; }
+    .wa-title { font-size: 2rem; }
+    .btn-wa { width: 100%; justify-content: center; }
+    
+    .social-float { width: 80%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fw-buster">
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-mosque"></i> MANARUL HIDAYAH</div>
+      <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#profil">Profil</a></li>
+        <li><a href="index.html#brosur">Pendaftaran</a></li>
+        <li><a href="index.html#kegiatan">Kegiatan</a></li>
+        <li><a href="index.html#berita">Berita</a></li>
+        <li><a href="#" style="color:var(--c-emerald);">Kontak</a></li>
+        <li><a href="#" class="btn-ppdb-nav">DAFTAR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <img src="https://image2url.com/r2/default/images/1771329747574-1f8db0cf-49fa-4797-a366-010e1775e9b3.png" class="header-bg" alt="Kontak">
+    <div class="header-content reveal">
+      <h1 class="header-title">Silaturahmi</h1>
+      <p class="header-desc">Kami siap melayani pertanyaan seputar pendaftaran dan informasi pesantren.</p>
+    </div>
+  </header>
+
+  <section class="info-sec">
+    <div class="info-grid reveal">
+      
+      <div class="info-card loc">
+        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <h3>Lokasi Kampus</h3>
+        <p>Jl. Raya Maja-Jasinga Km. 15<br>Kp. Pasir Buah, Desa Candi<br>Kec. Curugbitung, Kab. Lebak, Banten</p>
+      </div>
+
+      <div class="info-card mail">
+        <div class="info-icon"><i class="fas fa-envelope-open-text"></i></div>
+        <h3>Email & Surat</h3>
+        <p>admin@manarulhidayah.ponpes.id<br>ppmanarulhidayah@gmail.com<br>Kode Pos: 42381</p>
+      </div>
+
+      <div class="info-card time">
+        <div class="info-icon"><i class="far fa-clock"></i></div>
+        <h3>Jam Pelayanan</h3>
+        <p><strong>Sekretariat:</strong><br>Senin - Sabtu: 08.00 - 15.00 WIB<br>Jumat: Libur / Tutup</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="wa-sec">
+    <div class="wa-box reveal">
+      <div class="wa-content">
+        <h2 class="wa-title">Layanan Chat WhatsApp</h2>
+        <p class="wa-desc">Agar pelayanan lebih cepat dan tepat sasaran, silakan pilih tujuan pesan Anda di bawah ini:</p>
+        
+        <div class="wa-buttons">
+          <a href="https://wa.link/t404ut" class="btn-wa">
+            <i class="fab fa-whatsapp"></i> Panitia PPDB
+          </a>
+          
+          <a href="https://wa.link/v0ceab" class="btn-wa">
+            <i class="fas fa-info-circle"></i> Humas & Umum
+          </a>
+
+          <a href="https://wa.me/6281510040699" class="btn-wa">
+            <i class="fas fa-user-shield"></i> Izin & Keamanan
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-sec reveal">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.539974287679!2d106.39867931476974!3d-6.324009995423199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e4205a20603775b%3A0xc39f997935032064!2sPondok%20Pesantren%20Manarul%20Hidayah!5e0!3m2!1sid!2sid!4v1676648293021!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    
+    <div class="social-float">
+      <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </section>
+
+  <footer>
+    <h2 style="font-family:'Cabinet Grotesk'; font-size: 2rem; margin-bottom: 10px;">MANARUL HIDAYAH</h2>
+    <p style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 30px;">Jl. Maja-Jasinga Km.15, Kp. Pasir Buah, Lebak, Banten.</p>
+    <a href="index.html" class="btn-ppdb-nav" style="background: white; color: var(--c-emerald) !important;">KEMBALI KE HOME</a>
+    <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 Yayasan Pendidikan Islam Manarul Hidayah</p>
+  </footer>
+
+</div>
+
+<script>
+  function toggleMenu() { document.getElementById("navMenu").classList.toggle("active"); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
